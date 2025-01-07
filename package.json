@@ -2,21 +2,33 @@
   "name": "my-photo-organizer",
   "version": "0.1.0",
   "private": true,
+  "main": "main.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently \"next dev\" \"electron .\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-progress": "^1.1.1",
+    "@radix-ui/react-slot": "^1.1.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "concurrently": "^9.1.2",
+    "electron": "^33.2.1",
+    "exiftool-vendored": "^29.0.0",
+    "fs-extra": "^11.2.0",
+    "lucide-react": "^0.469.0",
+    "next": "14.2.22",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.22"
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
     "eslint": "^8",
-    "eslint-config-next": "14.2.22"
+    "eslint-config-next": "14.2.22",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
   }
 }
