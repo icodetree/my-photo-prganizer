@@ -18,7 +18,10 @@ app.on("ready", () => {
     },
   });
 
-  mainWindow.loadURL("http://localhost:3000"); // Next.js 서버 URL
+  // mainWindow.loadURL("http://localhost:3000"); // Next.js 서버 URL
+  mainWindow.loadFile(
+    path.join(__dirname, "my-photo-organizer/.next", "index.html")
+  );
 });
 
 // 재귀적으로 모든 파일 찾기

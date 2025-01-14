@@ -1,0 +1,17 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.yourapp.id
+files:
+  - filter:
+      - main.js
+      - preload.js
+      - my-photo-organizer/.next/**
+      - node_modules/**
+mac:
+  target: dmg
+win:
+  target: nsis
+linux:
+  target: AppImage
+electronVersion: 33.2.1
