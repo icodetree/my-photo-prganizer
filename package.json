@@ -6,11 +6,11 @@
   "private": true,
   "main": "main.js",
   "build": {
-    "appId": "com.yourapp.id",
+    "appId": "funcoding",
     "files": [
       "main.js",
       "preload.js",
-      "my-photo-organizer/.next/**",
+      ".next/**",
       "node_modules/**"
     ],
     "directories": {
