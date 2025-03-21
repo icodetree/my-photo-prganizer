@@ -1,4 +1,10 @@
-const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog,
+  globalShortcut,
+} = require("electron");
 const path = require("path");
 const fs = require("fs-extra");
 const { ExifTool } = require("exiftool-vendored");
@@ -23,7 +29,7 @@ app.on("ready", () => {
     const indexPath = path.join(__dirname, "out/index.html");
 
     // 개발자 도구 열기 (디버깅용)
-    mainWindow.webContents.openDevTools({ mode: "detach" });
+    // mainWindow.webContents.openDevTools({ mode: "detach" });
 
     // 로그 추가
     console.log("Loading index from:", indexPath);
@@ -70,6 +76,11 @@ app.on("ready", () => {
     mainWindow.loadURL("http://localhost:3000");
   }
 
+  // 개발자 도구 단축키 등록 (Ctrl+Shift+I 또는 Cmd+Shift+I)
+  globalShortcut.register("CommandOrControl+Shift+I", () => {
+    if (mainWindow) mainWindow.webContents.toggleDevTools();
+  });
+
   // test
   mainWindow.webContents.on("did-fail-load", (event, errorCode, errorDesc) => {
     console.error(`Failed to load: ${errorDesc} (${errorCode})`);
@@ -80,9 +91,9 @@ app.on("ready", () => {
   });
 
   // 개발자 도구 강제 오픈 (프로덕션 모드에서만)
-  if (app.isPackaged) {
-    mainWindow.webContents.openDevTools({ mode: "detach" });
-  }
+  // if (app.isPackaged) {
+  //   mainWindow.webContents.openDevTools({ mode: "detach" });
+  // }
 });
 
 // 재귀적으로 모든 파일 찾기

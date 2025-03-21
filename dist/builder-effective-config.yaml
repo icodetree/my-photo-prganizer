@@ -3,13 +3,20 @@ directories:
   buildResources: out
 appId: funcoding
 asar: false
+compression: normal
+publish: null
 files:
   - filter:
       - main.js
       - preload.js
       - out/**/*
+      - '!out/**/*.map'
       - public/**/*
-      - node_modules/**
+      - '!node_modules/**/{CHANGELOG.md,README.md,README,readme.md,readme}'
+      - '!node_modules/**/{test,__tests__,tests,powered-test,example,examples}'
+      - '!node_modules/**/*.d.ts'
+      - '!node_modules/**/*.ts'
+      - '!node_modules/.bin'
       - package.json
 icon: public/photoflow.png
 mac:
@@ -23,4 +30,4 @@ win:
   target: nsis
 linux:
   target: AppImage
-electronVersion: 33.2.1
+electronVersion: 30.5.1
