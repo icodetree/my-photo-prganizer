@@ -95,7 +95,7 @@ export default function Home() {
     <div className="container mx-auto p-4 max-w-full">
       <Card>
         <CardHeader>
-          <CardTitle>갤러리 정리</CardTitle>
+          <CardTitle>포토플로우</CardTitle>
           <CardDescription>
             선택한 방식으로 사진을 자동으로 정리해드립니다.
           </CardDescription>

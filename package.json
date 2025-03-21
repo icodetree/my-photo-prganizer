@@ -1,23 +1,31 @@
 {
-  "name": "my-photo-organizer",
+  "name": "photoflow",
   "author": "funcoding",
-  "description": "A photo organizer application using Electron",
-  "version": "0.1.0",
+  "description": "PhotoFlow - 스마트 사진 정리 도구",
+  "version": "1.0.0",
   "private": true,
   "main": "main.js",
   "build": {
     "appId": "funcoding",
+    "asar": false,
     "files": [
       "main.js",
       "preload.js",
-      ".next/**",
-      "node_modules/**"
+      "out/**/*",
+      "public/**/*",
+      "node_modules/**",
+      "package.json"
     ],
+    "icon": "public/photoflow.png",
     "directories": {
-      "output": "dist"
+      "output": "dist",
+      "buildResources": "out"
     },
     "mac": {
-      "target": "dmg"
+      "target": ["zip", "dmg"],
+      "identity": null,
+      "hardenedRuntime": false,
+      "notarize": false
     },
     "win": {
       "target": "nsis"
@@ -31,7 +39,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "electron:build": "npm run build && electron-builder"
+    "fix-html": "node scripts/fix-html-paths.js",
+    "electron:build": "rm -rf dist && npm run build && npm run fix-html && electron-builder --publish=never",
+    "electron:build:mac": "rm -rf dist && npm run build && npm run fix-html && electron-builder --mac --publish=never",
+    "electron:build:win": "rm -rf dist && npm run build && npm run fix-html && electron-builder --win --publish=never",
+    "electron:build:linux": "rm -rf dist && npm run build && npm run fix-html && electron-builder --linux --publish=never"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.3",
@@ -53,6 +65,7 @@
   "devDependencies": {
     "electron": "^33.2.1",
     "electron-builder": "^25.1.8",
+    "electron-builder-notarize": "^1.5.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.22",
     "postcss": "^8",

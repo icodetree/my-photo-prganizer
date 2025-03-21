@@ -1,0 +1,5 @@
+appId: funcoding
+productName: Photo Organizer
+directories:
+  output: dist
+  buildResources: public

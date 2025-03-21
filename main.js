@@ -9,7 +9,7 @@ let mainWindow;
 app.on("ready", () => {
   mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 435,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"), // preload.js 경로
       contextIsolation: true, // true로 설정
@@ -18,10 +18,71 @@ app.on("ready", () => {
     },
   });
 
-  // mainWindow.loadURL("http://localhost:3000"); // Next.js 서버 URL
-  mainWindow.loadFile(
-    path.join(__dirname, "my-photo-organizer/.next", "index.html")
-  );
+  // 프로덕션 모드에서의 로드 방식 변경
+  if (app.isPackaged) {
+    const indexPath = path.join(__dirname, "out/index.html");
+
+    // 개발자 도구 열기 (디버깅용)
+    mainWindow.webContents.openDevTools({ mode: "detach" });
+
+    // 로그 추가
+    console.log("Loading index from:", indexPath);
+
+    // 정적 파일 요청을 처리하기 위한 프로토콜 핸들러 등록 (간소화된 버전)
+    mainWindow.webContents.session.protocol.registerFileProtocol(
+      "file",
+      (request, callback) => {
+        const url = request.url.substr(7); // 'file://' 제거
+        console.log("Protocol request for:", url);
+
+        // 애플리케이션 루트 경로에 대한 요청 처리
+        if (url.endsWith("/")) {
+          callback({ path: path.normalize(`${__dirname}/out/index.html`) });
+          return;
+        }
+
+        // 상대 경로로 시작하는 요청 처리 (./_next/)
+        if (url.includes("./_next/")) {
+          const filePath = path.normalize(
+            `${__dirname}/out/_next/${url.split("./_next/")[1]}`
+          );
+          console.log("Next.js asset path:", filePath);
+          callback({ path: filePath });
+          return;
+        }
+
+        // 일반적인 경로 처리
+        const normalizedPath = path.normalize(`${__dirname}/${url}`);
+        console.log("Other file path:", normalizedPath);
+        callback({ path: normalizedPath });
+      }
+    );
+
+    // file:// 프로토콜 대신 직접 파일 경로를 사용
+    mainWindow.loadFile(indexPath).catch((err) => {
+      console.error("Failed to load index.html:", err);
+      dialog.showErrorBox(
+        "Load Error",
+        `Failed to load index.html: ${err.message}`
+      );
+    });
+  } else {
+    mainWindow.loadURL("http://localhost:3000");
+  }
+
+  // test
+  mainWindow.webContents.on("did-fail-load", (event, errorCode, errorDesc) => {
+    console.error(`Failed to load: ${errorDesc} (${errorCode})`);
+  });
+
+  mainWindow.webContents.on("console-message", (event, level, message) => {
+    console.log(`[Renderer] ${message}`);
+  });
+
+  // 개발자 도구 강제 오픈 (프로덕션 모드에서만)
+  if (app.isPackaged) {
+    mainWindow.webContents.openDevTools({ mode: "detach" });
+  }
 });
 
 // 재귀적으로 모든 파일 찾기
