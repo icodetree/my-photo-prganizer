@@ -89,11 +89,6 @@ app.on("ready", () => {
   mainWindow.webContents.on("console-message", (event, level, message) => {
     console.log(`[Renderer] ${message}`);
   });
-
-  // 개발자 도구 강제 오픈 (프로덕션 모드에서만)
-  // if (app.isPackaged) {
-  //   mainWindow.webContents.openDevTools({ mode: "detach" });
-  // }
 });
 
 // 재귀적으로 모든 파일 찾기
